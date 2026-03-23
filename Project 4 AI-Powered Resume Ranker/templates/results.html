@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking Results — Resume Ranker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="header-left">
+      <span class="eyebrow">NLP · TF-IDF · Cosine Similarity</span>
+      <h1>Ranking <em>Results</em></h1>
+    </div>
+    <div class="header-badge">{{ total }} CANDIDATE{% if total != 1 %}S{% endif %}</div>
+  </header>
+
+  <div class="results-header">
+    <h2>Candidate <span>Score</span> Board</h2>
+    <div>
+      <div class="results-meta">SORTED BY RELEVANCE SCORE</div>
+      <a href="/download" class="btn-download" style="margin-top:0.5rem;">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download CSV
+      </a>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Candidate</th>
+          <th>Match Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in results %}
+        <tr class="rank-{{ r.Rank if r.Rank <= 3 else '' }}">
+          <td><span class="rank-badge">{{ r.Rank }}</span></td>
+          <td><span class="candidate-name">{{ r.Candidate }}</span></td>
+          <td>
+            <div class="score-cell">
+              <div class="score-bar-track">
+                <div class="score-bar-fill" style="width: {{ r.Score }}%"></div>
+              </div>
+              <span class="score-value">{{ r.Score }}%</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="back-row">
+    <a href="/" class="back-link">&larr; RANK ANOTHER BATCH</a>
+  </div>
+
+  <footer>
+    <p>RESUME RANKER &copy; 2025</p>
+    <span class="footer-tag">spaCy · scikit-learn · Flask</span>
+  </footer>
+</div>
+</body>
+</html>
